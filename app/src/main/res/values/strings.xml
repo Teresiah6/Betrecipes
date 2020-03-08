@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BetsTrial</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="Key">This is the Key</string>
+    <string name="GroupSports">This is the group</string>
+    <string name="sporttitle">sportTitle</string>
+    <string name="search">search</string>
+
+</resources>
