@@ -69,7 +69,8 @@ public class BetListActivity extends AppCompatActivity implements SearchView.OnQ
             public void onResponse(Call<Data> call, Response<Data> response) {
 
                 if (response.body() != null) {
-                    setupAdapter(response.body().data);
+                    list.addAll(response.body().data);
+                    setupAdapter(list);
 
 
                 }
@@ -82,11 +83,12 @@ public class BetListActivity extends AppCompatActivity implements SearchView.OnQ
         });
      }
 
-    private void setupAdapter(List<Bet> list){
-        adapter = new Adapter(list, BetListActivity.this);
+    private void setupAdapter(ArrayList<Bet> list){
+        BetsAdapter adapter = new BetsAdapter(list);
         LinearLayoutManager betsLayoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         betsRv.setLayoutManager(betsLayoutManager);
+        betsRv.setAdapter(adapter);
 
 //
 //

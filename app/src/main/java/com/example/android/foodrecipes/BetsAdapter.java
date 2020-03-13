@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
-
+import java.util.List;
 
 
 public class BetsAdapter extends RecyclerView.Adapter<BetsAdapter.BetViewHolder> {
@@ -21,6 +20,8 @@ public class BetsAdapter extends RecyclerView.Adapter<BetsAdapter.BetViewHolder>
 
         this.bets = bets;
     }
+
+
 
     @NonNull
     @Override
