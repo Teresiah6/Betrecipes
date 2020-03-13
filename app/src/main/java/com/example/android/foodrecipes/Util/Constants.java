@@ -21,17 +21,20 @@ public class Constants {
     }
 
 
+
     // contains part of the URL that is not going to change
     public static final String BASE_URL = "https://api.the-odds-api.com/v3/sports";
 
     public static final String QUERY_PARAMETER_KEY = "apiKey";
 
 //    public static final String KEY = "key";
+    public static  final String SPORT = "soccer";
+    public static final String REGION = "uk";
 
     public static final String API_KEY = "b06668474acf7d52f3d7bd3046b82b7f";
 
     //add query for the title
-    public static URL buildUrl(String title) {
+   public static URL buildUrl(String title) {
         //String fullUrl = BASE_URL + "?q =" + title;
         //best practices is to use a URI builder not a string
 
@@ -42,7 +45,7 @@ public class Constants {
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 //.appendQueryParameter(QUERY_PARAMETER_KEY,title)
                 .appendQueryParameter(QUERY_PARAMETER_KEY, API_KEY)
-                //.appendQueryParameter(KEY,API_KEY)
+                .appendQueryParameter(SPORT, REGION)
                 .build();
         try {
             //   url = new URL(fullUrl);

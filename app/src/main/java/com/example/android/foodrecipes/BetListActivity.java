@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -22,38 +23,90 @@ import com.example.android.foodrecipes.Util.Constants;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.example.android.foodrecipes.Util.Constants.BASE_URL;
 
 public class BetListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
+    public static final String BASE_URL = " https://api.the-odds-api.com/";
     private ProgressBar mLoadingProgress;
     private RecyclerView betsRv;
+    private Adapter adapter;
+    private Data data;
+    private ArrayList<Bet> list;
+    private BetInterface betInterface;
+    private String apiKey ="b06668474acf7d52f3d7bd3046b82b7f";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bet_list);
+        data = new Data();
+        list = new ArrayList<>();
+
         mLoadingProgress = (ProgressBar) findViewById(R.id.progressBarLoading);
         betsRv = (RecyclerView) findViewById(R.id.betsRV);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        betInterface = retrofit.create(BetInterface.class);
+        getDatafromAApi();
+    }
+     private void getDatafromAApi () {
+
+        betInterface.getData(apiKey).enqueue(new Callback<Data>() {
+            @Override
+            public void onResponse(Call<Data> call, Response<Data> response) {
+
+                if (response.body() != null) {
+                    setupAdapter(response.body().data);
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Data> call, Throwable t) {
+
+            }
+        });
+     }
+
+    private void setupAdapter(List<Bet> list){
+        adapter = new Adapter(list, BetListActivity.this);
         LinearLayoutManager betsLayoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         betsRv.setLayoutManager(betsLayoutManager);
 
-        try {
-            //arsenal is what we want to find
-            URL betUrl = Constants.buildUrl("arsenal");
-
-            String jsonResult = Constants.getJson(betUrl);
-            //inorder to call the async task we need to instantiate the class and call execute method
-            new BetsQueryTask().execute(betUrl);
-
-
-        } catch (Exception e) {
-            Log.d("error", e.getMessage());
-
-        }
-
+//
+//
+//
+//        try {
+//            //arsenal is what we want to find
+//            URL betUrl = Constants.buildUrl("arsenal");
+//
+//            String jsonResult = Constants.getJson(betUrl);
+//            //inorder to call the async task we need to instantiate the class and call execute method
+//            new BetsQueryTask().execute(betUrl);
+//
+//
+//        } catch (Exception e) {
+//            Log.d("error", e.getMessage());
+//
+//        }
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
